@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: vercel
+    description: Vercel connection operations
 paths:
   /healthz:
     get:
@@ -24,6 +26,19 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /vercel/status:
+    get:
+      operationId: getVercelStatus
+      tags: [vercel]
+      summary: Check the connected Vercel account
+      description: Returns a safe summary of the connected Vercel account and its projects without exposing credentials.
+      responses:
+        "200":
+          description: Vercel status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VercelStatus"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +48,42 @@ components:
           type: string
       required:
         - status
+    VercelProjectSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        framework:
+          type: ["string", "null"]
+        updatedAt:
+          type: ["string", "null"]
+      required:
+        - id
+        - name
+        - framework
+        - updatedAt
+    VercelStatus:
+      type: object
+      properties:
+        connected:
+          type: boolean
+        projectCount:
+          type: number
+        projects:
+          type: array
+          items:
+            $ref: "#/components/schemas/VercelProjectSummary"
+        checkedAt:
+          type: string
+          format: date-time
+        message:
+          type: string
+      required:
+        - connected
+        - projectCount
+        - projects
+        - checkedAt
+        - message
 

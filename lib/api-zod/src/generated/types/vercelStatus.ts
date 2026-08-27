@@ -5,24 +5,12 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-export interface HealthStatus {
-  status: string;
-}
-
-export interface VercelProjectSummary {
-  id: string;
-  name: string;
-  /** @nullable */
-  framework: string | null;
-  /** @nullable */
-  updatedAt: string | null;
-}
+import type { VercelProjectSummary } from './vercelProjectSummary';
 
 export interface VercelStatus {
   connected: boolean;
   projectCount: number;
   projects: VercelProjectSummary[];
-  checkedAt: string;
+  checkedAt: Date;
   message: string;
 }
-
